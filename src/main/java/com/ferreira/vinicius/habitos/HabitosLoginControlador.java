@@ -2,13 +2,19 @@
 
 package com.ferreira.vinicius.habitos;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.Map;
-import java.util.Collection;
-import java.util.HashMap;
 
 @RestController
 public class HabitosLoginControlador {
@@ -38,15 +44,30 @@ public class HabitosLoginControlador {
 		return "Usuario criado com sucesso.";
 		
 	}
-	@GetMapping("/novoMetodo")
+	@GetMapping("/listarUsuario")
 	public Collection<Cadastro> listarUsuarios() {
-		
-		return  cadastroMap.values();
-		
-		
+		List<Cadastro> cadastroList = new ArrayList<>();
+		for (Entry<String, Cadastro> entry : cadastroMap.entrySet()) {
+			Cadastro val = entry.getValue();
+			cadastroList.add(val);
+		    
+		}
+		return cadastroList;
 	}
-	
+		
+		@DeleteMapping("/deletarUsuario")
+		public  String deletarUsuario (@RequestParam String nomeUsuario){
+			
+			 if(!cadastroMap.containsKey(nomeUsuario)) {
+				 return "usuario inexistente";
+			 }  else {
+				 cadastroMap.remove(nomeUsuario);
+			 return "usuario "+nomeUsuario+" removido com sucesso";
+		}
+			
+	}
+}
 		
 	
 
-}
+
