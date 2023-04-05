@@ -2,7 +2,7 @@ package com.ferreira.vinicius.habitos;
 import java.util.Map;
 import java.util.Objects;
 import java.util.HashMap;
-public class Cadastro implements java.io.Serializable {
+public class Cadastro  {
 	private String usuario = "";
 	private String senha = "";
 	//Construtor
