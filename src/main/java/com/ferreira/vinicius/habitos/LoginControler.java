@@ -16,38 +16,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 @RestController
-public class HabitosLoginControlador {
+public class LoginControler {
 
 	Map<String, Cadastro> cadastroMap = new HashMap<String, Cadastro>();
+	AccessControlManager accessControlManager;
+
+	public LoginControler() {
+		this.accessControlManager = new AccessControlManager();
+	}
 
 	@PostMapping("/login")
 	public ResponseEntity<Cadastro> login(@RequestBody LoginRequest loginRequest) {
 
 		Cadastro usuario = cadastroMap.get(loginRequest.getUsuario());
 
-		if (usuario != null && usuario.getSenha().equals(loginRequest.getSenha())) {
-
-			return ResponseEntity.ok(usuario);
-
-		} else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		 if (usuario != null && usuario.getSenha().equals(loginRequest.getSenha())) {
+		        this.accessControlManager.registradorTempo(loginRequest.getUsuario());
+		        if (this.accessControlManager.acessoPermitido(loginRequest.getUsuario())) {
+		            return ResponseEntity.ok(usuario);
+		        } else {
+		            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		        }
+		    } else {
+		        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		    }
 		}
-
-	}
-
-	// no lugar de armazenar o id em uma variavel do tipo UUID, armazenei ela em uma
-	// String "id", garante que cada usuario tenha seu id unico
-
-	// Já que O meu response Entity retorna um objeto: criei uma classe de mensagem
-	// de erro e criei um novo objeto para retornar o texto desejado
-	// mudei O tipo do meu responseEntity para <?> Assim sendo compativel com todos
-	// os objetos.
-	
-	// Padronizei um formato para o usuario usando os os metodos da classe String e
-	// Regex pra limitar os caracteres que podem ser usados
 
 	@PostMapping("/usuarios")
 	public ResponseEntity<?> criarUsuario(@RequestBody Cadastro novoUsuario) {
@@ -72,7 +67,15 @@ public class HabitosLoginControlador {
 			String mensagemErro = "usuario existente";
 			RespostaErro respostaErro = new RespostaErro(mensagemErro);
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(respostaErro);
-		}else {
+		}
+		// padronizei o formato da senha
+		String senha = novoUsuario.getSenha().trim();
+
+		if (senha.length() < 8 && !senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=]).+$")) {
+			String mensagemErro = "A senha deve ter pelo menos 8 caracteres, uma letra minúscula, uma letra maiúscula, um número e um símbolo especial";
+			RespostaErro respostaErro = new RespostaErro(mensagemErro);
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(respostaErro);
+		}
 
 		String id = UUID.randomUUID().toString();
 		novoUsuario.setId(id);
@@ -80,7 +83,7 @@ public class HabitosLoginControlador {
 		cadastroMap.put(id, novoUsuario);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
-		}
+
 	}
 
 	@GetMapping("/usuarios")
@@ -89,12 +92,16 @@ public class HabitosLoginControlador {
 	}
 
 	@DeleteMapping("/usuarios/{id}")
-	public ResponseEntity<Cadastro> deletarUsuario(@PathVariable String id) {
+	public ResponseEntity<?> deletarUsuario(@PathVariable String id) {
 		if (!cadastroMap.containsKey(id)) {
-			return ResponseEntity.notFound().build();
+			String mensagemErro = "Usuario não encontrado";
+			RespostaErro respostaErro = new RespostaErro(mensagemErro);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respostaErro);
 		} else {
 			cadastroMap.remove(id);
-			return ResponseEntity.ok().build();
+			String mensagemErro = "Usuario removido";
+			RespostaErro respostaErro = new RespostaErro(mensagemErro);
+			return ResponseEntity.status(HttpStatus.OK).body(respostaErro);
 		}
 	}
 
@@ -102,6 +109,7 @@ public class HabitosLoginControlador {
 	public ResponseEntity<Cadastro> atualizarCadastro(@PathVariable String id,
 			@RequestBody Cadastro usuarioAtualizado) {
 		Cadastro cadastro = cadastroMap.get(id);
+
 		if (cadastro == null) {
 			return ResponseEntity.notFound().build();
 		}
