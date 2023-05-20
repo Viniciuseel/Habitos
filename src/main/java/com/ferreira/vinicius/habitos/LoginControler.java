@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginControler {
 
-	Map<String, Cadastro> cadastroMap = new HashMap<String, Cadastro>();
+	Map<String, Usuario> cadastroMap = new HashMap<String, Usuario>();
 	AccessControlManager accessControlManager;
 
 	public LoginControler() {
@@ -28,9 +28,9 @@ public class LoginControler {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<Cadastro> login(@RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<Usuario> login(@RequestBody LoginRequest loginRequest) {
 
-		Cadastro usuario = cadastroMap.get(loginRequest.getUsuario());
+		Usuario usuario = cadastroMap.get(loginRequest.getUsuario());
 
 		 if (usuario != null && usuario.getSenha().equals(loginRequest.getSenha())) {
 		        this.accessControlManager.registradorTempo(loginRequest.getUsuario());
@@ -45,7 +45,7 @@ public class LoginControler {
 		}
 
 	@PostMapping("/usuarios")
-	public ResponseEntity<?> criarUsuario(@RequestBody Cadastro novoUsuario) {
+	public ResponseEntity<?> criarUsuario(@RequestBody Usuario novoUsuario) {
 		String usuario = novoUsuario.getUsuario().trim();
 
 		if (!usuario.matches("^[A-za-z0-9_]+$")) {
@@ -58,7 +58,7 @@ public class LoginControler {
 		if (usuario.length() < tamanhoMinimo || usuario.length() > tamanhoMaximo) {
 			String mensagemErro = "O usuario deve ter no Min 4 e no Max 8 caracters";
 			RespostaErro respostaErro = new RespostaErro(mensagemErro);
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(mensagemErro);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagemErro);
 		}
 
 		boolean usuarioExitente = cadastroMap.values().stream()
@@ -71,10 +71,9 @@ public class LoginControler {
 		// padronizei o formato da senha
 		String senha = novoUsuario.getSenha().trim();
 
-		if (senha.length() < 8 && !senha.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=]).+$")) {
+		if (senha.length() < 8 && !senha.matches("^[\\w-\\.]+@[a-zA-Z0-9-]+\\.[a-z]{2,4}")) {
 			String mensagemErro = "A senha deve ter pelo menos 8 caracteres, uma letra minúscula, uma letra maiúscula, um número e um símbolo especial";
-			RespostaErro respostaErro = new RespostaErro(mensagemErro);
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(respostaErro);
+			return responderComErro(HttpStatus.UNPROCESSABLE_ENTITY,mensagemErro);
 		}
 
 		String id = UUID.randomUUID().toString();
@@ -86,8 +85,13 @@ public class LoginControler {
 
 	}
 
+	private ResponseEntity<?> responderComErro(HttpStatus statusDaRespostaHttp, String mensagemErro) {
+		RespostaErro respostaErro = new RespostaErro(mensagemErro);
+		return ResponseEntity.status(statusDaRespostaHttp).body(respostaErro);
+	}
+
 	@GetMapping("/usuarios")
-	public Collection<Cadastro> listarUsuarios() {
+	public Collection<Usuario> listarUsuarios() {
 		return cadastroMap.values();
 	}
 
@@ -106,9 +110,9 @@ public class LoginControler {
 	}
 
 	@PutMapping("/usuarios/{id}")
-	public ResponseEntity<Cadastro> atualizarCadastro(@PathVariable String id,
-			@RequestBody Cadastro usuarioAtualizado) {
-		Cadastro cadastro = cadastroMap.get(id);
+	public ResponseEntity<Usuario> atualizarCadastro(@PathVariable String id,
+			@RequestBody Usuario usuarioAtualizado) {
+		Usuario cadastro = cadastroMap.get(id);
 
 		if (cadastro == null) {
 			return ResponseEntity.notFound().build();

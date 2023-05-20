@@ -2,17 +2,17 @@ package com.ferreira.vinicius.habitos;
 
 import java.util.Objects;
 
-public class Cadastro {
+public class Usuario {
 	private String usuario = "";
 	private String senha = "";
 	private String id;
 
 	// Construtor
-	public Cadastro() {
+	public Usuario() {
 
 	}
 
-	public Cadastro(String usuario, String senha) {
+	public Usuario(String usuario, String senha) {
 		this.usuario = usuario;
 		this.senha = senha;
 	}
@@ -47,7 +47,7 @@ public class Cadastro {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Cadastro other = (Cadastro) obj;
+		Usuario other = (Usuario) obj;
 		return Objects.equals(senha, other.senha) && Objects.equals(usuario, other.usuario);
 	}
 
@@ -58,9 +58,4 @@ public class Cadastro {
 	public void setId(String string) {
 		this.id = string;
 	}
-
-	public Object getloginRequest() {
-		return null;
-	}
-
 }
