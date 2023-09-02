@@ -32,17 +32,17 @@ public class LoginControler {
 
 		Usuario usuario = cadastroMap.get(loginRequest.getUsuario());
 
-		 if (usuario != null && usuario.getSenha().equals(loginRequest.getSenha())) {
-		        this.accessControlManager.registradorTempo(loginRequest.getUsuario());
-		        if (this.accessControlManager.acessoPermitido(loginRequest.getUsuario())) {
-		            return ResponseEntity.ok(usuario);
-		        } else {
-		            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		        }
-		    } else {
-		        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		    }
+		if (usuario != null && usuario.getSenha().equals(loginRequest.getSenha())) {
+			this.accessControlManager.registradorTempo(loginRequest.getUsuario());
+			if (this.accessControlManager.acessoPermitido(loginRequest.getUsuario())) {
+				return ResponseEntity.ok(usuario);
+			} else {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+			}
+		} else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
+	}
 
 	@PostMapping("/usuarios")
 	public ResponseEntity<?> criarUsuario(@RequestBody Usuario novoUsuario) {
@@ -69,9 +69,10 @@ public class LoginControler {
 		// padronizei o formato da senha
 		String senha = novoUsuario.getSenha().trim();
 
-		if (senha.length() < 8 || !senha.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=])[a-zA-Z0-9@#$%^&+=]{8,}")) {
+		if (senha.length() < 8
+				|| !senha.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=])[a-zA-Z0-9@#$%^&+=]{8,}")) {
 			String mensagemErro = "A senha deve ter pelo menos 8 caracteres, uma letra minúscula, uma letra maiúscula, um número e um símbolo especial";
-			return responderComErro(HttpStatus.UNPROCESSABLE_ENTITY,mensagemErro);
+			return responderComErro(HttpStatus.UNPROCESSABLE_ENTITY, mensagemErro);
 		}
 
 		String id = UUID.randomUUID().toString();
@@ -82,8 +83,6 @@ public class LoginControler {
 		return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
 
 	}
-
-	
 
 	private ResponseEntity<?> responderComErro(HttpStatus statusDaRespostaHttp, String mensagemErro) {
 		RespostaErro respostaErro = new RespostaErro(mensagemErro);
@@ -110,8 +109,7 @@ public class LoginControler {
 	}
 
 	@PutMapping("/usuarios/{id}")
-	public ResponseEntity<Usuario> atualizarCadastro(@PathVariable String id,
-			@RequestBody Usuario usuarioAtualizado) {
+	public ResponseEntity<Usuario> atualizarCadastro(@PathVariable String id, @RequestBody Usuario usuarioAtualizado) {
 		Usuario cadastro = cadastroMap.get(id);
 
 		if (cadastro == null) {
@@ -124,6 +122,6 @@ public class LoginControler {
 
 	public void setAccessControlManager(LoginService accessControlManager2) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
