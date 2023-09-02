@@ -2,13 +2,12 @@ package com.ferreira.vinicius.habitos;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
-public class AccessControlManager {
+public class LoginService {
 	private Map<String, Long> tempoDeAcesso;
 
-	public AccessControlManager() {
-		this.tempoDeAcesso = new HashMap<>();
-	}
+	
 
 	public void registradorTempo(String idUsuario) {
 		tempoDeAcesso.put(idUsuario, System.currentTimeMillis());
@@ -22,5 +21,10 @@ public class AccessControlManager {
 			return tempoDecorrido <= 30 * 60 * 1000;
 		}
 		return false;
+	}
+
+	public BooleanSupplier isTempoRegistrado(String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

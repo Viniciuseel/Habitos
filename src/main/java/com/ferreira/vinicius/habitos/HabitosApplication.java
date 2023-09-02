@@ -11,7 +11,7 @@ public class HabitosApplication {
 		SpringApplication.run(HabitosApplication.class, args);
 	}
 	  @Bean
-	    public AccessControlManager accessControlManager() {
-	        return new AccessControlManager();
+	    public LoginService accessControlManager() {
+	        return new LoginService();
 	    }
 }

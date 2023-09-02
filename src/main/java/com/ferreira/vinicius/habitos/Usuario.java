@@ -9,7 +9,7 @@ public class Usuario {
 
 	// Construtor
 	public Usuario() {
-
+		
 	}
 
 	public Usuario(String usuario, String senha) {

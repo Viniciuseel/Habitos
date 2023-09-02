@@ -6,6 +6,10 @@ public class LoginRequest {
 	private String senha;
 	private String usuario;
 
+	public LoginRequest(String string, String string2) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getSenha() {
 		return senha;
 	}
