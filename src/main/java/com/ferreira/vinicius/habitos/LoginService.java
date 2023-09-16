@@ -5,15 +5,41 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 public class LoginService {
-	private Map<String, Long> tempoDeAcesso;
 
+	private LoginRepository loginRepository;
+
+	// private Map<String, Usuario> cadastroMap = new HashMap<String, Usuario>();
+	// private Map<String, Long> tempoDeAcesso;
+	public LoginService( ) {
+		this.loginRepository = new LoginRepository();
+	}
 	
+	public void adicionarUsuario(String usuario, String senha) {
+		Usuario novoUsuario = new Usuario(usuario, senha);
+		cadastroMap.put(usuario, novoUsuario);
+	}
 
-	public void registradorTempo(String idUsuario) {
+	public Usuario getUsuario(String nomeDoUsuario) {
+		return cadastroMap.get(nomeDoUsuario);
+	}
+
+	public boolean login(String usuario, String senha) {
+		Usuario usuarioObj = loginRepository.procuraUsuario(usuario);
+
+		if (usuario != null && usuarioObj.getSenha().equals(senha)) {
+			this.registradorTempo(usuario);
+			return this.acessoPermitido(usuario);
+
+		} else {
+			return false;
+		}
+	}
+
+	private void registradorTempo(String idUsuario) {
 		tempoDeAcesso.put(idUsuario, System.currentTimeMillis());
 	}
 
-	public  boolean acessoPermitido(String idUsuario) {
+	private boolean acessoPermitido(String idUsuario) {
 		Long ultimoAcesso = tempoDeAcesso.get(idUsuario);
 		if (ultimoAcesso != null) {
 			long horaAtual = System.currentTimeMillis();
@@ -23,7 +49,7 @@ public class LoginService {
 		return false;
 	}
 
-	public BooleanSupplier isTempoRegistrado(String string) {
+	private BooleanSupplier isTempoRegistrado(String string) {
 		// TODO Auto-generated method stub
 		return null;
 	}

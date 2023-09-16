@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,28 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginControler {
 
-	Map<String, Usuario> cadastroMap = new HashMap<String, Usuario>();
-	LoginService accessControlManager;
+	private LoginService loginService;
 
 	public LoginControler() {
-		this.accessControlManager = new LoginService();
+		this.loginService = new LoginService();
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<Usuario> login(@RequestBody LoginRequest loginRequest) {
-
-		Usuario usuario = cadastroMap.get(loginRequest.getUsuario());
-
-		if (usuario != null && usuario.getSenha().equals(loginRequest.getSenha())) {
-			this.accessControlManager.registradorTempo(loginRequest.getUsuario());
-			if (this.accessControlManager.acessoPermitido(loginRequest.getUsuario())) {
-				return ResponseEntity.ok(usuario);
-			} else {
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-			}
-		} else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
+		boolean usuarioEstaAutenticado = loginService.login(loginRequest.getUsuario(), loginRequest.getSenha());
+		if(usuarioEstaAutenticado) {	
+			return ResponseEntity.ok(null);
 		}
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 	@PostMapping("/usuarios")

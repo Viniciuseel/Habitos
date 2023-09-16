@@ -43,7 +43,7 @@ public class LoginControlerTest {
 	        assertEquals(HttpStatus.OK, resposta.getStatusCode());
 	        assertNotNull(resposta.getBody());
 
-	        assertTrue(controladorDeLogin.accessControlManager.isTempoRegistrado("Vinicius"));
+	        assertTrue(controladorDeLogin.loginService.isTempoRegistrado("Vinicius"));
 	    }
 
 	
