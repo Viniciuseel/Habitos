@@ -8,8 +8,8 @@ public class LoginService {
 
 	private LoginRepository loginRepository;
 
-	// private Map<String, Usuario> cadastroMap = new HashMap<String, Usuario>();
-	// private Map<String, Long> tempoDeAcesso;
+	 private Map<String, Usuario> cadastroMap = new HashMap<String, Usuario>();
+	 private Map<String, Long> tempoDeAcesso;
 	public LoginService( ) {
 		this.loginRepository = new LoginRepository();
 	}

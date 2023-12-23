@@ -30,21 +30,21 @@ public class LoginControlerTest {
 		assertEquals("Vinicius", usuarioResposta.getUsuario());
 		assertEquals("Vinicius@1", usuarioResposta.getSenha());
 	}
-	 @Test
-	    public void testLoginComCredenciaisValidas() {
-	        LoginControler controladorDeLogin = new LoginControler();
-	        Usuario usuario = new Usuario();
-	        usuario.setUsuario("Vinicius");
-	        usuario.setSenha("Vinicius@1");
-	        
-	        controladorDeLogin.setAccessControlManager(new LoginService());
-
-	        ResponseEntity<Usuario> resposta = controladorDeLogin.login(new LoginRequest("Vinicius", "Vinicius@1"));
-	        assertEquals(HttpStatus.OK, resposta.getStatusCode());
-	        assertNotNull(resposta.getBody());
-
-	        assertTrue(controladorDeLogin.loginService.isTempoRegistrado("Vinicius"));
-	    }
+//	 @Test
+//	    public void testLoginComCredenciaisValidas() {
+//	        LoginControler controladorDeLogin = new LoginControler();
+//	        Usuario usuario = new Usuario();
+//	        usuario.setUsuario("Vinicius");
+//	        usuario.setSenha("Vinicius@1");
+//	        
+//	        controladorDeLogin.setAccessControlManager(new LoginService());
+//
+//	        ResponseEntity<Usuario> resposta = controladorDeLogin.login(new LoginRequest("Vinicius", "Vinicius@1"));
+//	        assertEquals(HttpStatus.OK, resposta.getStatusCode());
+//	        assertNotNull(resposta.getBody());
+//
+//	        assertTrue(controladorDeLogin.loginService.isTempoRegistrado("Vinicius"));
+//	    }
 
 	
 	

@@ -6,10 +6,6 @@ public class LoginRequest {
 	private String senha;
 	private String usuario;
 
-	public LoginRequest(String string, String string2) {
-		// TODO Auto-generated constructor stub
-	}
-
 	public String getSenha() {
 		return senha;
 	}
@@ -42,8 +38,5 @@ public class LoginRequest {
 		LoginRequest other = (LoginRequest) obj;
 		return Objects.equals(senha, other.senha) && Objects.equals(usuario, other.usuario);
 	}
-	
-	
-	
-}
 
+}
