@@ -1,2 +1,2 @@
 # Habitos
-Este aplicativo está sendo desenvolvido para ajudar pessoas com dificuldade para  melhorar seu Habitos no dia a dia.  
+Nosso aplicativo foi projetado com o objetivo de apoiar indivíduos que enfrentam desafios na melhoria de seus hábitos diários. Com uma abordagem centrada no usuário, oferecemos ferramentas e recursos intuitivos para facilitar a adoção de práticas mais saudáveis e produtivas.
