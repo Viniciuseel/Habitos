@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class UsuarioServico {
 	private Map<String, Usuario> cadastroMap = new HashMap<>();
@@ -29,6 +30,7 @@ public class UsuarioServico {
 				throw new UsuarioExistenteException("Usuário já existe");
 			}
 		}
+		cadastroMap.values().stream().filter(new UsuarioExistePredicado(usuarioCriado));
 		/*
 		 * verificando se o usuario já existe usando uma expreção lambda, e função
 		 * anonima, desisti de usar pq n entendi direito
