@@ -1,4 +1,4 @@
-package com.ferreira.vinicius.habitos;
+package com.ferreira.vinicius.habitos.logica;
 
 import java.util.function.Predicate;
 

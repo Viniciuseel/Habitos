@@ -1,13 +1,15 @@
 package com.ferreira.vinicius.habitos;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.ferreira.vinicius.habitos.apresentacao.LoginControler;
+import com.ferreira.vinicius.habitos.logica.Usuario;
+import com.ferreira.vinicius.habitos.logica.UsuarioExistenteException;
+//como testar criação de login, criar os testes.
 public class LoginControlerTest {
 
 	@Test
@@ -17,16 +19,16 @@ public class LoginControlerTest {
 		ResponseEntity<?> resposta = controladorDeLogin.criarUsuario(usuario);
 		assertEquals(HttpStatus.BAD_REQUEST, resposta.getStatusCode());
 	}
-	
+
 	@Test
-	 public void testCriarNovoUsuarioComEmailValido() {
+	public void testCriarNovoUsuarioComEmailValido() {
 		LoginControler controladorDeLogin = new LoginControler();
 		Usuario usuario = new Usuario();
 		usuario.setUsuario("Vinicius");
 		usuario.setSenha("Vinicius@1");
 		ResponseEntity<?> resposta = controladorDeLogin.criarUsuario(usuario);
 		assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
-		Usuario usuarioResposta = ((Usuario)resposta.getBody());
+		Usuario usuarioResposta = ((Usuario) resposta.getBody());
 		assertEquals("Vinicius", usuarioResposta.getUsuario());
 		assertEquals("Vinicius@1", usuarioResposta.getSenha());
 	}
@@ -45,13 +47,5 @@ public class LoginControlerTest {
 //
 //	        assertTrue(controladorDeLogin.loginService.isTempoRegistrado("Vinicius"));
 //	    }
-
-	
-	
-	
-		
-	
-	
-	
 
 }
