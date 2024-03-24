@@ -2,21 +2,21 @@ package com.ferreira.vinicius.habitos.logica;
 
 //COMO MUDEI A CLASSE DE PACOTE PRECISEI IMPORTAR AS CLASSES ONDE CONTEM OS METODOS QUE MEU CODIGO PRECISA PARA FUNCIONAR
 //15/02
-import com.ferreira.vinicius.habitos.persistencia.LoginRepository;
+import com.ferreira.vinicius.habitos.persistencia.LoginRepositorio;
 
-public class LoginService {
+public class LoginServico {
 
-	private LoginRepository loginRepository;
+	private LoginRepositorio loginRepositorio;
 
-	public LoginService() {
-		this.loginRepository = new LoginRepository();
+	public LoginServico() {
+		this.loginRepositorio = new LoginRepositorio();
 	}
 
 	public boolean login(String usuario, String senha) {
-		Usuario usuarioObj = loginRepository.procurarUsuario(usuario);
+		Usuario usuarioObj = loginRepositorio.procurarUsuario(usuario);
 
 		if (usuario != null && usuarioObj.getSenha().equals(senha)) {
-			loginRepository.registrarUltimoAcessoAutorizado(usuario);
+			loginRepositorio.registrarUltimoAcessoAutorizado(usuario);
 			return this.acessoPermitido(usuario);
 
 		} else {
@@ -25,7 +25,7 @@ public class LoginService {
 	}
 
 	private boolean acessoPermitido(String idUsuario) {
-		Long ultimoAcesso = loginRepository.AcessarUltimoAcessoAutorizado(idUsuario);
+		Long ultimoAcesso = loginRepositorio.AcessarUltimoAcessoAutorizado(idUsuario);
 		if (ultimoAcesso != null) {
 			long horaAtual = System.currentTimeMillis();
 			long tempoDecorrido = horaAtual - ultimoAcesso;

@@ -22,12 +22,12 @@ public class UsuarioServico {
 			throw new UsuarioInvalidoException("Usuario invalido");
 		}
 
-		if (novoUsuario.getSenha().length() < 8 || !novoUsuario.getSenha()
-				.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[@#$%^&+=])[a-zA-Z0-9@#$%^&+=]{8,}\"")) {
+		/*if (novoUsuario.getSenha().length() < 8 || !novoUsuario.getSenha()
+				.matches("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=])[a-zA-Z0-9@#$%^&+=]{8,}\"")) {
 			throw new UsuarioInvalidoException(
 					"A senha deve ter pelo menos 8 caracteres, uma letra minúscula, uma letra maiúscula, "
 							+ "um número e um símbolo especial\"");
-		}
+		}*/
 		if (usuarioRepositorio.verificarNovoUsuario(novoUsuario)) {
 			throw new UsuarioInvalidoException("Usuario já existe");
 		}

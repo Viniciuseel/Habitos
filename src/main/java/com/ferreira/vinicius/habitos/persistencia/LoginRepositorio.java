@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.ferreira.vinicius.habitos.logica.Usuario;
 
-public class LoginRepository {
+public class LoginRepositorio {
 	private Map<String, Long> tempoDeAcesso;
 
 	public Usuario procurarUsuario(String usuario) {

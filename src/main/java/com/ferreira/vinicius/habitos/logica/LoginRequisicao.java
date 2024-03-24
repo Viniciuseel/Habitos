@@ -2,7 +2,7 @@ package com.ferreira.vinicius.habitos.logica;
 
 import java.util.Objects;
 
-public class LoginRequest {
+public class LoginRequisicao {
 	private String senha;
 	private String usuario;
 
@@ -35,7 +35,7 @@ public class LoginRequest {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		LoginRequest other = (LoginRequest) obj;
+		LoginRequisicao other = (LoginRequisicao) obj;
 		return Objects.equals(senha, other.senha) && Objects.equals(usuario, other.usuario);
 	}
 
